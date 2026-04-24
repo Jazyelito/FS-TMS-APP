@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TMS - Travel Manager Storage</title>
+    <style>
+        /* Estilos compatibles con navegadores de 2013 (Flexbox básico y prefijos) */
+        :root {
+            --primary: #1a2a6c;
+            --secondary: #b21f1f;
+            --accent: #fdbb2d;
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Pantalla de Bienvenida (Splash) */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .splash-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+        }
+
+        .splash-slogan {
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .brand span {
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: #777;
+            font-weight: normal;
+        }
+
+        .user-menu-container {
+            position: relative;
+        }
+
+        .user-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            width: 180px;
+            overflow: hidden;
+        }
+
+        .dropdown-menu button {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-menu button:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Pestañas */
+        .tabs {
+            display: flex;
+            background: #e0e0e0;
+            padding: 5px 5px 0;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #d0d0d0;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        /* Contenido */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .item-info {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .item-meta {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .check-btn {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .item-card.completed {
+            background: #f0fdf4;
+            opacity: 0.7;
+        }
+
+        .item-card.completed .check-btn {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+
+        .item-card.completed .item-name {
+            text-decoration: line-through;
+            color: #666;
+        }
+
+        /* Botón Flotante */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 90;
+        }
+
+        /* Modales */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-save { background: var(--primary); color: white; }
+        .btn-cancel { background: #eee; color: #555; }
+        .btn-delete { background: var(--secondary); color: white; }
+
+        /* Estilo Verificación */
+        .verification-mode .fab {
+            background: #22c55e;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="splash-screen">
+        <div class="splash-logo">TMS</div>
+        <div class="splash-slogan">¡Que tengas buen viaje!</div>
+    </div>
+
+    <header>
+        <div class="brand">
+            <h1>TMS</h1>
+            <span>¡Que tengas buen viaje!</span>
+        </div>
+        <div class="user-menu-container">
+            <button class="user-btn" onclick="toggleMenu()">👤</button>
+            <div id="user-menu" class="dropdown-menu">
+                <button onclick="exportJSON()">Descargar JSON</button>
+                <button onclick="toggleEditMode()">Modo Edición: <span id="edit-status">OFF</span></button>
+                <button onclick="toggleVerifyMode()">Modo Verificación: <span id="verify-status">OFF</span></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs">
+        <div class="tab active">Campamento</div>
+    </nav>
+
+    <main class="container" id="items-container">
+        <!-- Los items se cargan aquí -->
+    </main>
+
+    <button class="fab" id="main-fab" onclick="openAddModal()">+</button>
+
+    <!-- Modal Agregar/Editar -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Agregar Artículo</h3>
+            <input type="text" id="item-name-input" placeholder="Nombre del artículo (ej. Tienda)">
+            <input type="text" id="item-note-input" placeholder="Nota o categoría">
+            <div class="btn-group">
+                <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-save" onclick="saveItem()">Guardar</button>
+            </div>
+            <div id="delete-btn-container" style="margin-top: 10px; display: none;">
+                <button class="btn btn-delete" style="width: 100%" onclick="deleteItem()">Eliminar Artículo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Estado Global ---
+        let items = JSON.parse(localStorage.getItem('tms_items')) || [];
+        let isEditMode = false;
+        let isVerifyMode = false;
+        let currentEditingId = null;
+
+        // --- Gestión de Sesión (Animación) ---
+        window.onload = function() {
+            const splash = document.getElementById('splash-screen');
+            if (sessionStorage.getItem('tms_animated')) {
+                splash.style.display = 'none';
+            } else {
+                setTimeout(function() {
+                    splash.style.opacity = '0';
+                    setTimeout(function() {
+                        splash.style.display = 'none';
+                        sessionStorage.setItem('tms_animated', 'true');
+                    }, 800);
+                }, 2000);
+            }
+            renderItems();
+        };
+
+        // --- Funciones de UI ---
+        function toggleMenu() {
+            const menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Cerrar menú al hacer click fuera
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-btn')) {
+                document.getElementById('user-menu').style.display = 'none';
+            }
+        };
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            isVerifyMode = false;
+            document.getElementById('edit-status').innerText = isEditMode ? 'ON' : 'OFF';
+            document.getElementById('verify-status').innerText = 'OFF';
+            renderItems();
+        }
+
+        function toggleVerifyMode() {
+            isVerifyMode = !isVerifyMode;
+            isEditMode = false;
+            document.getElementById('verify-status').innerText = isVerifyMode ? 'ON' : 'OFF';
+            document.getElementById('edit-status').innerText = 'OFF';
+            renderItems();
+        }
+
+        // --- CRUD de Artículos ---
+        function renderItems() {
+            const container = document.getElementById('items-container');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999; margin-top:50px;">No hay artículos. Presiona + para agregar uno.</p>';
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'item-card' + (item.completed ? ' completed' : '');
+                
+                // Si estamos en verificación, obligar a seguir orden (opcional según tu regla)
+                // "No se debe pasar al siguiente si no se ha marcado como cumplido"
+                let isDisabled = false;
+                if (isVerifyMode && index > 0) {
+                    const previousItem = items[index - 1];
+                    if (!previousItem.completed) {
+                        isDisabled = true;
+                    }
+                }
+
+                card.style.opacity = isDisabled ? '0.4' : '1';
+                card.style.pointerEvents = isDisabled ? 'none' : 'auto';
+
+                card.innerHTML = `
+                    <div class="check-btn" onclick="toggleComplete(${item.id})">
+                        ${item.completed ? '✓' : ''}
+                    </div>
+                    <div class="item-info" onclick="${isEditMode ? `openEditModal(${item.id})` : `toggleComplete(${item.id})`}">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-meta">${item.note || 'Sin notas'}</span>
+                    </div>
+                    ${isEditMode ? '<span style="color:var(--primary); font-size:1.2rem;">✎</span>' : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openAddModal() {
+            currentEditingId = null;
+            document.getElementById('modal-title').innerText = "Agregar Artículo";
+            document.getElementById('item-name-input').value = "";
+            document.getElementById('item-note-input').value = "";
+            document.getElementById('delete-btn-container').style.display = "none";
+            document.getElementById('item-modal').style.display = "flex";
+        }
+
+        function openEditModal(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+            currentEditingId = id;
+            document.getElementById('modal-title').innerText = "Editar Artículo";
+            document.getElementById('item-name-input').value = item.name;
+            document.getElementById('item-note-input').value = item.note;
+            document.getElementById('delete-btn-container').style.display = "block";
+            document.getElementById('item-modal').style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById('item-modal').style.display = "none";
+        }
+
+        function saveItem() {
+            const name = document.getElementById('item-name-input').value;
+            const note = document.getElementById('item-note-input').value;
+
+            if (!name) {
+                alert("Por favor escribe un nombre.");
+                return;
+            }
+
+            if (currentEditingId) {
+                // Actualizar
+                items = items.map(i => i.id === currentEditingId ? {...i, name, note} : i);
+            } else {
+                // Nuevo
+                const newItem = {
+                    id: Date.now(),
+                    name: name,
+                    note: note,
+                    completed: false
+                };
+                items.push(newItem);
+            }
+
+            saveToStorage();
+            closeModal();
+            renderItems();
+        }
+
+        function deleteItem() {
+            if (confirm("¿Estás seguro de eliminar este artículo?")) {
+                items = items.filter(i => i.id !== currentEditingId);
+                saveToStorage();
+                closeModal();
+                renderItems();
+            }
+        }
+
+        function toggleComplete(id) {
+            if (isEditMode) return; // No marcar en modo edición
+            
+            items = items.map(i => {
+                if (i.id === id) {
+                    return {...i, completed: !i.completed};
+                }
+                return i;
+            });
+            saveToStorage();
+            renderItems();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('tms_items', JSON.stringify(items));
+        }
+
+        // --- Exportación ---
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "tms_backup_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    </script>
+</body>
+</html>
