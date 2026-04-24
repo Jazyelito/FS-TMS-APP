@@ -358,18 +358,39 @@
         // --- Gestión de Sesión (Animación) ---
         window.onload = function() {
             const splash = document.getElementById('splash-screen');
-            if (sessionStorage.getItem('tms_animated')) {
+            
+            // --- Lógica de Animación ---
+            if (sessionStorage.getItem('tms_session_active')) {
                 splash.style.display = 'none';
             } else {
                 setTimeout(function() {
                     splash.style.opacity = '0';
                     setTimeout(function() {
                         splash.style.display = 'none';
-                        sessionStorage.setItem('tms_animated', 'true');
+                        sessionStorage.setItem('tms_session_active', 'true');
                     }, 800);
-                }, 2000);
+                }, 1800);
             }
-            renderItems();
+        
+            // --- Lógica de Carga de Datos (GitHub JSON o LocalStorage) ---
+            if (items.length === 0) {
+                // Si no hay datos en localStorage, intentamos cargar el archivo del servidor
+                fetch('data.json')
+                    .then(response => {
+                        if (!response.ok) throw new Error('No se encontró data.json');
+                        return response.json();
+                    })
+                    .then(data => {
+                        items = data;
+                        updateData(); // Guarda en localStorage y renderiza
+                    })
+                    .catch(err => {
+                        console.log('Iniciando con lista vacía:', err.message);
+                        renderItems();
+                    });
+            } else {
+                renderItems();
+            }
         };
 
         // --- Funciones de UI ---
