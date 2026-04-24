@@ -1,0 +1,230 @@
+[
+  {
+    "id": 1777064641298,
+    "name": "Biblia",
+    "note": "Estudio",
+    "completed": false
+  },
+  {
+    "id": 1777064651803,
+    "name": "Himnario",
+    "note": "Estudio",
+    "completed": false
+  },
+  {
+    "id": 1777064663876,
+    "name": "Libreta",
+    "note": "Estudio",
+    "completed": false
+  },
+  {
+    "id": 1777064681233,
+    "name": "Lapicero",
+    "note": "Estudio",
+    "completed": false
+  },
+  {
+    "id": 1777064720755,
+    "name": "Plato",
+    "note": "Utencilios",
+    "completed": false
+  },
+  {
+    "id": 1777064739302,
+    "name": "Vaso",
+    "note": "Utencilios",
+    "completed": false
+  },
+  {
+    "id": 1777064754620,
+    "name": "Cuchara",
+    "note": "Utencilios",
+    "completed": false
+  },
+  {
+    "id": 1777064773797,
+    "name": "Tenedor",
+    "note": "Utencilios ",
+    "completed": false
+  },
+  {
+    "id": 1777064794044,
+    "name": "Olla",
+    "note": "Utencilios",
+    "completed": false
+  },
+  {
+    "id": 1777064828074,
+    "name": "Jabón ",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064839776,
+    "name": "Shampoo",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064853361,
+    "name": "Pasta dental",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064863788,
+    "name": "Cepillo dental",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064884730,
+    "name": "Peine",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064899214,
+    "name": "Desodorante",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064920435,
+    "name": "Toalla",
+    "note": "Aseo",
+    "completed": false
+  },
+  {
+    "id": 1777064996904,
+    "name": "Sábana",
+    "note": "Descanso",
+    "completed": false
+  },
+  {
+    "id": 1777065035409,
+    "name": "Pijama",
+    "note": "Vestimenta",
+    "completed": false
+  },
+  {
+    "id": 1777065055936,
+    "name": "Ropa sábado",
+    "note": "Vestimenta",
+    "completed": false
+  },
+  {
+    "id": 1777065107849,
+    "name": "Playera club",
+    "note": "Vestimenta / sábado tarde",
+    "completed": false
+  },
+  {
+    "id": 1777065131365,
+    "name": "Pants",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065148885,
+    "name": "Playera club azul",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065167987,
+    "name": "Short piscina",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065191069,
+    "name": "Playera piscina ",
+    "note": "Vestimenta",
+    "completed": false
+  },
+  {
+    "id": 1777065270121,
+    "name": "Ropa interior",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065294900,
+    "name": "Calcetas",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065302728,
+    "name": "Tenis",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065310669,
+    "name": "Chanclas",
+    "note": "Vestimenta ",
+    "completed": false
+  },
+  {
+    "id": 1777065338175,
+    "name": "Linterna",
+    "note": "Herramientas",
+    "completed": false
+  },
+  {
+    "id": 1777065349414,
+    "name": "Pilas linterna",
+    "note": "Herramienta",
+    "completed": false
+  },
+  {
+    "id": 1777065366774,
+    "name": "Navaja",
+    "note": "Herramienta ",
+    "completed": false
+  },
+  {
+    "id": 1777065383648,
+    "name": "Papel aluminio ",
+    "note": "Utencilio",
+    "completed": false
+  },
+  {
+    "id": 1777065406511,
+    "name": "Repelente",
+    "note": "Salud",
+    "completed": false
+  },
+  {
+    "id": 1777065419031,
+    "name": "Piola",
+    "note": "Herramienta ",
+    "completed": false
+  },
+  {
+    "id": 1777065434570,
+    "name": "Cerillos",
+    "note": "Herramienta",
+    "completed": false
+  },
+  {
+    "id": 1777065454961,
+    "name": "Medicamentos personales",
+    "note": "Salud",
+    "completed": false
+  },
+  {
+    "id": 1777065492619,
+    "name": "Ropa empacada en bolsa de plástico",
+    "note": "Seguridad",
+    "completed": false
+  },
+  {
+    "id": 1777069678493,
+    "name": "Todo listo",
+    "note": "Fin",
+    "completed": false
+  }
+]
